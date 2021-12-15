@@ -7,4 +7,4 @@ This is a spring boot example application designed to process mobile numbers and
 * GET: http://localhost:8080/customers/
 
 ##There is also a dockerfile to generate the docker image for this service
-** please expose port 8080 when running the image as the frontend would send requests to localhost:8080
+please expose port 8080 when running the image as the frontend would send requests to localhost:8080
