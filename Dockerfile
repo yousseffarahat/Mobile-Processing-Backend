@@ -1,12 +1,19 @@
-FROM maven:3.6.0-jdk-11-slim AS build
-COPY src /home/app/src
-COPY pom.xml /home/app
-RUN mvn -f /home/app/pom.xml clean package
+FROM maven:3.6.3-jdk-11-slim AS build
 
-#
-# Package stage
-#
+WORKDIR usr/src/app
+
+COPY . ./
+
+RUN mvn clean package
+
 FROM openjdk:11-jre-slim
-COPY --from=build /home/app/target/mobile-number-processing.jar /usr/local/lib/mobile-number-processing.jar
+
+ARG JAR_NAME="mobile-number-processing"
+
+WORKDIR /usr/src/app
+
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/usr/local/lib/mobile-number-processing.jar"]
+
+COPY --from=build /usr/src/app/target/${JAR_NAME}.jar ./app.jar
+
+CMD ["java","-jar", "./app.jar"]
